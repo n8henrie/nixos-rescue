@@ -5,28 +5,42 @@
 , options
 , specialArgs
 }: {
-  isoImage.isoName = lib.mkForce "rescue.iso";
+
+  imports = [
+    "${modulesPath}/profiles/all-hardware.nix"
+    "${modulesPath}/profiles/base.nix"
+    "${modulesPath}/installer/cd-dvd/iso-image.nix"
+  ];
+
+  isoImage = {
+    compressImage = true;
+    makeEfiBootable = true;
+    makeUsbBootable = true;
+  };
+
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
     kernelParams = [ "copytoram" ];
-    initrd = {
-      availableKernelModules = [ ];
-      supportedFilesystems = [
-        "zfs"
-        "btrfs"
-        "vfat"
-      ];
-    };
+    kernelModules = [ ];
+    supportedFilesystems = [
+      "btrfs"
+      "squashfs"
+      "vfat"
+      "zfs"
+    ];
+    loader.grub.memtest86.enable = true;
   };
   environment = {
     systemPackages = with pkgs; [
       arch-install-scripts
       bashInteractive
       fd
+      git
       jq
       neovim
       parted
       ripgrep
+      rsync
     ];
     variables = {
       EDITOR = "nvim";
@@ -64,4 +78,6 @@
       experimental-features = nix-command flakes repl-flake
     '';
   };
+
+  system.stateVersion = lib.trivial.release;
 }

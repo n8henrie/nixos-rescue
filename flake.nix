@@ -1,18 +1,11 @@
 {
   description = "NixOS-based rescue drive";
-  inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  };
-  outputs = { self, nixpkgs, nixos-generators, ... }: {
+  inputs.nixos.url = "nixpkgs/nixos-unstable";
+  outputs = { self, nixos }: {
     packages.x86_64-linux = rec {
-      default = rescue;
-      rescue = nixos-generators.nixosGenerate {
-        system = "aarch64-linux";
-        format = "install-iso";
+      default = rescue.config.system.build.isoImage;
+      rescue = nixos.lib.nixosSystem {
+        system = "x86_64-linux";
         modules = [
           ./configuration.nix
         ];
