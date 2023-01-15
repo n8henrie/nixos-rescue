@@ -1,0 +1,13 @@
+diff --git a/nixos/modules/installer/cd-dvd/iso-image.nix b/nixos/modules/installer/cd-dvd/iso-image.nix
+index 5bd343c85fa..7520344da76 100644
+--- a/nixos/modules/installer/cd-dvd/iso-image.nix
++++ b/nixos/modules/installer/cd-dvd/iso-image.nix
+@@ -286,7 +286,7 @@ let
+     if serial; then set with_serial=yes ;fi
+     export with_serial
+     clear
+-    set timeout=10
++    set timeout=1
+ 
+     # This message will only be viewable when "gfxterm" is not used.
+     echo ""
