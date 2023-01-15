@@ -1,13 +1,33 @@
 diff --git a/nixos/modules/installer/cd-dvd/iso-image.nix b/nixos/modules/installer/cd-dvd/iso-image.nix
-index 5bd343c85fa..7520344da76 100644
+index 5bd343c85fa..d6b82361315 100644
 --- a/nixos/modules/installer/cd-dvd/iso-image.nix
 +++ b/nixos/modules/installer/cd-dvd/iso-image.nix
-@@ -286,7 +286,7 @@ let
+@@ -76,6 +76,10 @@ let
+     else
+       max (config.boot.loader.timeout * 10) 1;
+ 
++  grubEfiTimeout = if config.boot.loader.timeout == null then
++      0
++    else
++      config.boot.loader.timeout;
+ 
+   max = x: y: if x > y then x else y;
+ 
+@@ -100,7 +104,7 @@ let
+ 
+     ${config.isoImage.syslinuxTheme}
+ 
+-    DEFAULT boot
++    DEFAULT boot-copytoram
+ 
+     LABEL boot
+     MENU LABEL NixOS ${config.system.nixos.label}${config.isoImage.appendToMenuLabel}
+@@ -286,7 +290,7 @@ let
      if serial; then set with_serial=yes ;fi
      export with_serial
      clear
 -    set timeout=10
-+    set timeout=1
++    set timeout=${grubEfiTimeout}
  
      # This message will only be viewable when "gfxterm" is not used.
      echo ""
