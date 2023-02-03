@@ -12,6 +12,8 @@
   ];
 
   isoImage = {
+    makeEfiBootable = true;
+    makeUsbBootable = true;
     compressImage = true;
     isoName = lib.mkForce "rescue.iso";
     appendToMenuLabel = " Rescue";
@@ -45,6 +47,7 @@
     hostName = "rescue";
     domain = "home.arpa";
     useDHCP = true;
+    wireless.enable = true;
   };
 
   environment = {
