@@ -1,17 +1,9 @@
 {
   description = "NixOS-based rescue drive";
-  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
-  outputs = { self, nixpkgs }:
+  inputs.nixos.url = "nixpkgs/nixos-unstable";
+  outputs = { self, nixos }:
     let
       system = "x86_64-linux";
-      nixos =
-        let src = (import nixpkgs { inherit system; }).applyPatches {
-          name = "nixos-rescue-patches";
-          src = nixpkgs;
-          patches = [ ./iso-image.patch ];
-        };
-        in
-        nixpkgs.lib.fix (self: (import "${src}/flake.nix").outputs { inherit self; });
     in
     {
       packages.x86_64-linux = rec {
@@ -22,6 +14,16 @@
             ./configuration.nix
           ];
         };
+        vm = (nixos.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./configuration.nix
+            (nixos + "/nixos/modules/virtualisation/qemu-vm.nix")
+            ({ config, pkgs, ... }: {
+              virtualisation.qemu.options = [ "-nographic" ];
+            })
+          ];
+        }).config.system.build.vm;
       };
     };
 }
