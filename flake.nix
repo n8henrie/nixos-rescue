@@ -25,5 +25,9 @@
           ];
         }).config.system.build.vm;
       };
+      apps.x86_64-linux.default = {
+        type = "app";
+        program = "${self.outputs.packages.x86_64-linux.vm}/bin/run-rescue-vm";
+      };
     };
 }
