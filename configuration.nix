@@ -1,24 +1,29 @@
-{ pkgs
-, config
-, lib
-, modulesPath
-, options
-, specialArgs
+{
+  pkgs,
+  config,
+  lib,
+  modulesPath,
+  options,
+  specialArgs,
 }: {
   imports = [
+    "${modulesPath}/installer/cd-dvd/channel.nix"
+    "${modulesPath}/installer/cd-dvd/iso-image.nix"
     "${modulesPath}/profiles/all-hardware.nix"
     "${modulesPath}/profiles/base.nix"
-    "${modulesPath}/installer/cd-dvd/iso-image.nix"
   ];
 
   boot = {
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
-    kernelParams = [ "copytoram" ];
-    kernelModules = [ ];
+    kernelParams = [
+      "copytoram"
+      "boot.shell_on_fail"
+    ];
+    kernelModules = [];
     loader.timeout = lib.mkForce 0;
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    binfmt.emulatedSystems = ["aarch64-linux"];
     supportedFilesystems = [
-      "apfs"
+      # "apfs"
       "btrfs"
       "exfat"
       "ext2"
