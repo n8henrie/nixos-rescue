@@ -31,7 +31,7 @@ jobs:
           nix show-derivation ./result
 
       # Workaround for https://github.com/actions/upload-artifact/issues/92
-      - run: echo "UPLOAD_PATH=$(readlink -f result)/iso/*" >> $GITHUB_ENV
+      - run: echo "UPLOAD_PATH=$(readlink -f result)/iso" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v3
         with:
           name: rescue
