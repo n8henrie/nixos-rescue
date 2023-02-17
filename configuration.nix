@@ -17,6 +17,7 @@
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     kernelParams = [
       "copytoram"
+      "console=ttyS0,115200"
       "boot.shell_on_fail"
     ];
     kernelModules = [];
