@@ -18,6 +18,7 @@
     kernelParams = [
       "copytoram"
       "console=ttyS0,115200"
+      "console=tty1"
       "boot.shell_on_fail"
     ];
     kernelModules = [];
