@@ -24,7 +24,18 @@
               config,
               pkgs,
               ...
-            }: {
+            }: let
+              isoimage = pkgs.runCommandLocal "rescue.iso" {} ''
+                set -Eeuf -o pipefail
+                set -x
+                rescue=${self.outputs.packages.x86_64-linux.default}/iso/rescue.iso
+                if [ "${toString config.isoImage.compressImage}" ]; then
+                  ${pkgs.zstd}/bin/zstd --decompress --keep --stdout "''${rescue}.zst" > $out
+                else
+                  ln -s "$rescue" $out
+                fi
+              '';
+            in {
               virtualisation = {
                 memorySize = 2048;
                 graphics = false;
@@ -44,7 +55,7 @@
                 qemu = {
                   drives = [
                     {
-                      file = "${self.outputs.packages.x86_64-linux.default}/iso/rescue.iso";
+                      file = "${isoimage}";
                       driveExtraOpts = {
                         media = "cdrom";
                         format = "raw";

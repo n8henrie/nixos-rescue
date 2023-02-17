@@ -39,7 +39,7 @@
   isoImage = {
     makeEfiBootable = true;
     makeUsbBootable = true;
-    compressImage = false;
+    compressImage = true;
     isoName = lib.mkForce "rescue.iso";
     appendToMenuLabel = " Rescue";
   };
