@@ -7,11 +7,15 @@
   }: let
     system = "x86_64-linux";
   in {
+    nixosModules = rec {
+      default = rescue;
+      rescue.imports = [./configuration.nix];
+    };
     packages.x86_64-linux = rec {
       default = rescue.config.system.build.isoImage;
       rescue = nixos.lib.nixosSystem {
         inherit system;
-        modules = [./configuration.nix];
+        modules = [self.nixosModules.default];
       };
       vm =
         (nixos.lib.nixosSystem {
