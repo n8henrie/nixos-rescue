@@ -15,13 +15,17 @@
       default = rescue.config.system.build.isoImage;
       rescue = nixos.lib.nixosSystem {
         inherit system;
-        modules = [self.nixosModules.default];
+        modules = [
+          self.nixosModules.default
+          ./hardware-configuration.nix
+        ];
       };
       vm =
         (nixos.lib.nixosSystem {
           inherit system;
           modules = [
-            ./configuration.nix
+            self.nixosModules.default
+            ./hardware-configuration.nix
             (nixos + "/nixos/modules/virtualisation/qemu-vm.nix")
             (nixos + "/nixos/modules/profiles/qemu-guest.nix")
             ({

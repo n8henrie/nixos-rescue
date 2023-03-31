@@ -2,17 +2,8 @@
   pkgs,
   config,
   lib,
-  modulesPath,
-  options,
-  specialArgs,
+  ...
 }: {
-  imports = [
-    "${modulesPath}/installer/cd-dvd/channel.nix"
-    "${modulesPath}/installer/cd-dvd/iso-image.nix"
-    "${modulesPath}/profiles/all-hardware.nix"
-    "${modulesPath}/profiles/base.nix"
-  ];
-
   boot = {
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     kernelParams = [
@@ -35,14 +26,6 @@
       "xfs"
       "zfs"
     ];
-  };
-
-  isoImage = {
-    makeEfiBootable = true;
-    makeUsbBootable = true;
-    compressImage = true;
-    isoName = lib.mkForce "rescue.iso";
-    appendToMenuLabel = " Rescue";
   };
 
   services = {
