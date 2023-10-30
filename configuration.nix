@@ -13,7 +13,10 @@
       "boot.shell_on_fail"
     ];
     kernelModules = [];
-    loader.timeout = lib.mkForce 0;
+    loader = {
+      timeout = lib.mkForce 0;
+      generic-extlinux-compatible.enable = true;
+    };
     binfmt.emulatedSystems = ["aarch64-linux"];
     supportedFilesystems = [
       # "apfs"
