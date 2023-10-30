@@ -1,6 +1,4 @@
 {
-  pkgs,
-  config,
   lib,
   modulesPath,
   ...
@@ -13,10 +11,11 @@
   ];
 
   isoImage = {
-    makeEfiBootable = true;
     makeUsbBootable = true;
     compressImage = true;
     isoName = lib.mkForce "rescue.iso";
     appendToMenuLabel = " Rescue";
   };
+
+  hardware.enableAllFirmware = true;
 }

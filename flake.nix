@@ -1,11 +1,11 @@
 {
   description = "NixOS-based rescue drive";
-  inputs.nixos.url = "nixpkgs/nixos-22.11";
+  inputs.nixos.url = "nixpkgs/master";
   outputs = {
     self,
     nixos,
   }: let
-    system = "x86_64-linux";
+    system = "aarch64-linux";
   in {
     nixosModules = rec {
       default = rescue;
